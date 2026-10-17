@@ -1,7 +1,7 @@
 # Fahrtenbuch
 # Instrukcja obsługi
 
-**Prototyp instrukcji • aplikacja Android 1.8.0 • wydanie PL • 17.10.2026**
+**Instrukcja obsługi • aplikacja Android 1.8.0 • wydanie PL • 17.10.2026**
 
 Fahrtenbuch służy do zapisywania stanów licznika, tankowań i ładowań. Na podstawie wpisów pokazuje historię pojazdu, dystanse oraz możliwe do obliczenia zużycie paliwa. Koszty można sprawdzić w eksportowanych raportach PDF i CSV.
 
@@ -301,9 +301,9 @@ Nie. Do przywracania potrzebujesz pliku kopii zapasowej `.json`.
 
 W **Ustawienia > O twórcy** znajdziesz numer zainstalowanej wersji i odnośniki do strony autora oraz polityki prywatności.
 
-- Strona autora: https://mtelektronik.github.io
-- Polityka prywatności: https://mtelektronik.github.io/fahrtenbuch-privacy.html
+- Strona autora: https://mtelektronik.github.io/pl/
+- Polityka prywatności: https://mtelektronik.github.io/pl/fahrtenbuch-privacy.html
 
 ---
 
-**Status dokumentu: prototyp do przeglądu.** Przed ostatecznym wydaniem warto uzupełnić instrukcję o zrzuty ekranów z telefonu i sprawdzić nazwy przycisków na docelowej wersji aplikacji. Dokument opisuje istniejące zachowanie wersji 1.8.0, a nie listę planowanych funkcji.
+Instrukcja opisuje istniejące zachowanie wersji 1.8.0, a nie listę planowanych funkcji. Jeśli znajdziesz niejasny opis, zgłoś go autorowi, podając numer zainstalowanej wersji aplikacji.

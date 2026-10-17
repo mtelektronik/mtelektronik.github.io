@@ -2,6 +2,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import vm from 'node:vm';
+import { renderManual, manualFile } from './build-manual.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const output = path.join(root, 'dist');
@@ -12,6 +13,7 @@ const pages = {
   'impressum.html': 'impressumTitle',
   'privacy.html': 'privacyTitle',
   'fahrtenbuch-privacy.html': 'appPageTitle',
+  'fahrtenbuch-instrukcja.html': 'manualPageTitle',
 };
 const context = vm.createContext({});
 vm.runInContext(await readFile(path.join(root, 'assets/site-text.js'), 'utf8'), context);
@@ -43,7 +45,9 @@ function localize(source, file, language) {
     if (/^(?:[a-z][a-z\d+.-]*:|\/\/|#)/i.test(value)) return attribute;
     const url = new URL(value, origin + '/' + file);
     const target = url.pathname === '/' ? 'index.html' : url.pathname.slice(1);
-    const pathname = Object.hasOwn(pages, target) ? languagePath(language, target) : url.pathname;
+    const pathname = target === 'docs/' + manualFile('pl')
+      ? '/docs/' + manualFile(language)
+      : Object.hasOwn(pages, target) ? languagePath(language, target) : url.pathname;
     return name + '="' + pathname + url.search + url.hash + '"';
   });
   const canonical = origin + languagePath(language, file);
@@ -56,7 +60,8 @@ for (const file of Object.keys(pages)) {
   const source = await readFile(path.join(output, file), 'utf8');
   for (const language of languages) {
     await mkdir(path.join(output, language), { recursive: true });
-    await writeFile(path.join(output, language, file), localize(source, file, language));
+    const content = file === 'fahrtenbuch-instrukcja.html' ? await renderManual(language) : source;
+    await writeFile(path.join(output, language, file), localize(content, file, language));
   }
   // Preserve old links as Polish aliases pointing to the new canonical URLs.
   await writeFile(path.join(output, file), localize(source, file, 'pl'));
@@ -67,4 +72,4 @@ const oldUrls = new Set(Object.keys(pages).map(file => origin + '/' + (file === 
 sitemap = sitemap.replace(/<url><loc>([^<]+)<\/loc><\/url>/g, (entry, url) => oldUrls.has(url) ? '' : entry);
 const entries = languages.flatMap(language => Object.keys(pages).map(file => '<url><loc>' + origin + languagePath(language, file) + '</loc></url>')).join('');
 await writeFile(sitemapPath, sitemap.replace('</urlset>', entries + '</urlset>'));
-console.log('Built 12 localized HTML pages with canonical URLs and reciprocal hreflang.');
+console.log('Built '+(Object.keys(pages).length * languages.length)+' localized HTML pages with canonical URLs and reciprocal hreflang.');

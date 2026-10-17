@@ -7,7 +7,7 @@ function setLanguage(lang){
   document.querySelectorAll('[data-i18n-aria]').forEach(el=>{const value=text[el.dataset.i18nAria];if(value!==undefined)el.setAttribute('aria-label',value)});
   const select=document.getElementById('lang');if(select)select.value=lang;
   const page=document.body.dataset.page;
-  const key={home:'homePageTitle',impressum:'impressumTitle',sitePrivacy:'privacyTitle',appPrivacy:'appPageTitle'}[page];
+  const key={home:'homePageTitle',impressum:'impressumTitle',sitePrivacy:'privacyTitle',appPrivacy:'appPageTitle',manual:'manualPageTitle'}[page];
   if(text[key])document.title=text[key];
   const title=document.querySelector('meta[property="og:title"]');if(title)title.content=document.title;
   if(page==='home'){

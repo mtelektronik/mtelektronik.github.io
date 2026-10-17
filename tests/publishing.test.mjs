@@ -66,7 +66,7 @@ test('all language URLs contain existing translations, canonical and reciprocal 
   build(directory);
   const origin = 'https://mtelektronik.github.io';
   const languages = ['pl', 'de', 'en'];
-  const pages = ['index.html', 'impressum.html', 'privacy.html', 'fahrtenbuch-privacy.html'];
+  const pages = ['index.html', 'impressum.html', 'privacy.html', 'fahrtenbuch-privacy.html', 'fahrtenbuch-instrukcja.html'];
   const context = vm.createContext({});
   vm.runInContext(await readFile(path.join(directory, 'assets/site-text.js'), 'utf8'), context);
   const escape = s => s.replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
@@ -113,6 +113,40 @@ test('all language URLs contain existing translations, canonical and reciprocal 
   assert.doesNotMatch(article, /hreflang="(?:de|en)"/);
 });
 
+test('manual reading and downloading use the selected language and retain all 15 chapters', async t => {
+  const directory = await fixture(t);
+  build(directory);
+  const editions = {
+    pl: { file: 'fahrtenbuch-instrukcja-prototyp-1.8.0.md', download: 'Pobierz instrukcję', first: 'Szybki start', last: 'Informacje o aplikacji', backup: 'Nie łączy dwóch historii.' },
+    de: { file: 'fahrtenbuch-instrukcja-1.8.0-de.md', download: 'Anleitung herunterladen', first: 'Schnellstart', last: 'App-Informationen', backup: 'Zwei Historien werden nicht zusammengeführt.' },
+    en: { file: 'fahrtenbuch-instrukcja-1.8.0-en.md', download: 'Download the guide', first: 'Quick start', last: 'App information', backup: 'It does not merge two histories.' },
+  };
+  for (const [language, edition] of Object.entries(editions)) {
+    const home = await readFile(path.join(directory, 'dist', language, 'index.html'), 'utf8');
+    const manual = await readFile(path.join(directory, 'dist', language, 'fahrtenbuch-instrukcja.html'), 'utf8');
+    const markdown = await readFile(path.join(directory, 'dist/docs', edition.file), 'utf8');
+    assert.ok(home.includes('href="/' + language + '/fahrtenbuch-instrukcja.html"'));
+    for (const html of [home, manual]) {
+      assert.ok(html.includes('href="/docs/' + edition.file + '"'));
+      assert.ok(html.includes('>' + edition.download + '</a>'));
+      const instructionContent = html === home ? html.match(/<aside class="manual-callout"[\s\S]*?<\/aside>/)[0] : html;
+      assert.doesNotMatch(instructionContent.replace(/\b(?:href|src)="[^"]*"/g, ''), /prototyp|prototype|Entwurf|\(PL\)/i);
+    }
+    assert.equal([...markdown.matchAll(/^## \d+\. /gm)].length, 15);
+    assert.equal([...manual.matchAll(/<h2 id="manual-section-/g)].length, 15);
+    for (const content of [markdown, manual]) {
+      assert.ok(content.includes(edition.first));
+      assert.ok(content.includes(edition.last));
+      assert.ok(content.includes(edition.backup));
+      assert.ok(content.includes('10 MiB'));
+      assert.ok(content.includes('kWh/100 km'));
+    }
+    assert.equal(markdown, await readFile(path.join(directory, 'docs', edition.file), 'utf8'));
+  }
+  const alias = await readFile(path.join(directory, 'dist/fahrtenbuch-instrukcja.html'), 'utf8');
+  assert.ok(alias.includes('href="https://mtelektronik.github.io/pl/fahrtenbuch-instrukcja.html"'));
+});
+
 test('URL language overrides browser and saved preferences; switching and legacy links preserve page and fragment', async () => {
   const runtime = await readFile(path.join(root, 'assets/app.js'), 'utf8');
   const texts = await readFile(path.join(root, 'assets/site-text.js'), 'utf8');
@@ -135,6 +169,9 @@ test('URL language overrides browser and saved preferences; switching and legacy
   assert.equal(german.replaced, null);
   german.change({ target: { value: 'en' } });
   assert.equal(german.assigned, 'https://mtelektronik.github.io/en/privacy.html?ref=mail#main');
+  const manual = run('https://mtelektronik.github.io/de/fahrtenbuch-instrukcja.html#manual-section-7');
+  manual.change({ target: { value: 'en' } });
+  assert.equal(manual.assigned, 'https://mtelektronik.github.io/en/fahrtenbuch-instrukcja.html#manual-section-7');
   assert.equal(run('https://mtelektronik.github.io/?lang=de#projects').replaced, 'https://mtelektronik.github.io/de/#projects');
   assert.equal(run('https://mtelektronik.github.io/privacy.html?lang=en').replaced, 'https://mtelektronik.github.io/en/privacy.html');
   assert.equal(run('https://mtelektronik.github.io/pl/?lang=constructor').replaced, null);
