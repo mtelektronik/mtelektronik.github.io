@@ -31,7 +31,7 @@ GitHub: https://github.com/mtelektronik
 - Adres do doręczeń w impressum.html: autor uzupełni później. Dokument jest oznaczony jako nieukończony.
 - Polityki prywatności wymagają ukończenia i weryfikacji zgodnie z faktyczną konfiguracją hostingu oraz finalnej aplikacji (w szczególności kopie zapasowe, eksport, biblioteki).
 - Po publikacji Fahrtenbuch dodaj prawdziwy link Google Play i zaktualizuj status we wszystkich językach.
-- Opcjonalnie dodaj prawdziwą ikonę aplikacji i zrzuty ekranu (pojazdy, tankowanie, raport). Nie używaj prywatnych danych.
+- Opcjonalnie dodaj prawdziwą ikonę aplikacji. Dostarczone przez autora zrzuty ekranu są w assets/fahrtenbuch/ i w galerii projektu; podgląd raportu PDF jest obrazem, a nie plikiem PDF do pobrania.
 
 ## Pliki
 
