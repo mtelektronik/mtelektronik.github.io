@@ -1,20 +1,37 @@
 # MTElektronik — strona osobista i blog
 
-Statyczna strona Marcina Tchorza, publikowana przez GitHub Pages z gałęzi main (katalog główny). Pliki HTML są gotowe do udostępnienia; strona nie wymaga serwera aplikacji ani instalacji npm.
+Statyczna strona Marcina Tchorza. GitHub Actions automatycznie generuje i publikuje witrynę w GitHub Pages po każdej zmianie na gałęzi main. Strona nie wymaga serwera aplikacji ani instalacji npm.
 
 ## Dodawanie wpisu
 
-1. Dodaj plik Markdown w katalogu posts/. Skopiuj nagłówek istniejącego wpisu:
-   - slug: unikalny adres, małe litery bez polskich znaków, cyfry i myślniki;
-   - date: data publikacji YYYY-MM-DD;
-   - title: tytuł;
-   - description: krótkie streszczenie;
-   - category: kategoria.
-2. Pod nagłówkiem pisz treść. Obsługiwane są akapity, nagłówki ## i ### oraz linki Markdown z adresem https://, / lub kotwicą #.
-3. Uruchom z katalogu repozytorium: node scripts/build-blog.mjs (Node.js 18 lub nowszy).
-4. Dodaj plik źródłowy i wygenerowane zmiany do commita i wyślij do main.
+1. Na GitHubie otwórz folder posts i wybierz Add file → Create new file.
+2. Nazwij plik, np. 2026-10-18-moj-projekt.md, i wklej poniższy nagłówek wraz z treścią.
+3. Wybierz Commit changes i zapisz zmianę na gałęzi main (albo scal pull request do main).
+4. Gotowe: proces Publish website w zakładce Actions zaktualizuje stronę, RSS i mapę witryny. Nie uruchamiasz generatora ani nie dodajesz plików HTML.
 
-Generator aktualizuje blog/*.html, listę wpisów na stronie głównej, feed.xml i sitemap.xml. Po usunięciu wpisu usuń także jego wygenerowany plik blog/*.html przed publikacją. Nie edytuj ręcznie fragmentu pomiędzy znacznikami BLOG w index.html. Szablon wpisu znajduje się w templates/post.html.
+```markdown
+---
+slug: moj-projekt
+date: 2026-10-18
+title: Mój kolejny projekt
+description: Krótki opis tego, o czym jest wpis.
+category: Projekty
+---
+
+Pierwszy akapit mojego wpisu.
+
+## Jak powstawał projekt
+
+Kolejny akapit i [odnośnik](https://mtelektronik.github.io/).
+```
+
+Slug musi być unikalny; używaj małych liter bez polskich znaków, cyfr i myślników. Data ma format YYYY-MM-DD. To data widoczna we wpisie, nie harmonogram: każdy plik w posts/ jest publikowany po zapisaniu na main. Obsługiwane są akapity, nagłówki ## i ### oraz linki Markdown z adresem https://, / lub kotwicą #.
+
+Zmiana istniejącego pliku aktualizuje wpis. Usunięcie pliku usuwa artykuł także z opublikowanej witryny, RSS i mapy strony. Błędny nagłówek lub powtórzony slug zatrzymuje publikację; szczegóły są w zakładce Actions, a poprzednia wersja strony pozostaje dostępna. Popraw plik i zapisz kolejny commit, aby ponowić publikację.
+
+Workflow .github/workflows/pages.yml buduje katalog dist/ i publikuje go jako artefakt GitHub Pages. Nie zapisuje wygenerowanych plików z powrotem do repozytorium. Nie edytuj ręcznie fragmentu pomiędzy znacznikami BLOG w index.html. Szablon wpisu znajduje się w templates/post.html.
+
+Opcjonalny podgląd lokalny: uruchom node scripts/build-site.mjs (Node.js 24) i udostępnij katalog dist/ przez lokalny serwer HTTP. Testy publikowania: node --test tests/publishing.test.mjs. GitHub Pages musi mieć ustawione Settings → Pages → Source: GitHub Actions.
 
 ## Języki i wygląd
 
@@ -45,4 +62,4 @@ GitHub: https://github.com/mtelektronik
 
 ## Instrukcja Fahrtenbuch
 
-Prototyp instrukcji 1.8.0 (PL) znajduje się w docs/fahrtenbuch-instrukcja-prototyp-1.8.0.md. Po zmianie źródła uruchom node scripts/build-manual.mjs i dodaj do commita również wygenerowany fahrtenbuch-instrukcja.html. Dokument jest jawnie oznaczony jako prototyp. Łącze do czytania i pobrania jest w dziale projektu.
+Prototyp instrukcji 1.8.0 (PL) znajduje się w docs/fahrtenbuch-instrukcja-prototyp-1.8.0.md. Po zapisaniu zmiany tego pliku na main workflow automatycznie odświeża także stronę instrukcji. Dokument jest jawnie oznaczony jako prototyp. Łącze do czytania i pobrania jest w dziale projektu.

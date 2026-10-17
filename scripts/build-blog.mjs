@@ -1,4 +1,4 @@
-import { readFile, writeFile, mkdir, readdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, unlink } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
@@ -38,6 +38,13 @@ posts.sort((a,b) => b.date.localeCompare(a.date) || a.slug.localeCompare(b.slug)
 if (new Set(posts.map(p=>p.slug)).size !== posts.length) throw new Error('Duplicate slug');
 const shell = await readFile(path.join(root, 'templates', 'post.html'), 'utf8');
 await mkdir(path.join(root, 'blog'), {recursive:true});
+// A deleted or renamed Markdown source must not leave a published article behind.
+const generatedNames = new Set(posts.map(post => post.slug + '.html'));
+for (const file of await readdir(path.join(root, 'blog'))) {
+  if (file.endsWith('.html') && !generatedNames.has(file)) {
+    await unlink(path.join(root, 'blog', file));
+  }
+}
 for (const post of posts) {
   const replacements = {TITLE:escape(post.title), DESCRIPTION:escape(post.description), DATE:post.date, CATEGORY:escape(post.category), BODY:post.body, URL:`${origin}/blog/${post.slug}.html`};
   const page = shell.replace(/\{\{(TITLE|DESCRIPTION|DATE|CATEGORY|BODY|URL)\}\}/g, (_, key) => replacements[key]);
