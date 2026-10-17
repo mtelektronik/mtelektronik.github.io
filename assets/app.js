@@ -17,14 +17,24 @@ function setLanguage(lang){
   }
   try{localStorage.setItem('mt-language',lang)}catch(e){}
 }
-let initial='pl';
-try{initial=localStorage.getItem('mt-language')||((navigator.language||'pl').slice(0,2))}catch(e){}
-const queryLanguage=new URLSearchParams(location.search).get('lang');if(translations[queryLanguage])initial=queryLanguage;
-if(!translations[initial])initial='en';
+function languageUrl(lang){
+  const url=new URL(location.href);
+  const page=url.pathname.replace(/^\/(pl|de|en)(?=\/|$)/,'');
+  url.pathname='/'+lang+'/'+(page===''||page==='/'||page==='/index.html'?'':page.replace(/^\//,''));
+  url.searchParams.delete('lang');
+  return url;
+}
+// The URL owns the language: a saved preference must not change indexed HTML.
+const currentPath=new URL(location.href).pathname;
+const initial=currentPath.match(/^\/(pl|de|en)(?:\/|$)/)?.[1]||'pl';
 setLanguage(initial);
+// Keep old shared links such as /?lang=de working at the new address.
+const queryLanguage=new URLSearchParams(location.search).get('lang');
+if(Object.hasOwn(translations,queryLanguage))location.replace(languageUrl(queryLanguage).href);
 document.getElementById('lang')?.addEventListener('change',e=>{
-  setLanguage(e.target.value);
-  const url=new URL(location.href);url.searchParams.set('lang',e.target.value);
-  history.replaceState(null,'',url);
+  if(Object.hasOwn(translations,e.target.value)){
+    try{localStorage.setItem('mt-language',e.target.value)}catch(e){}
+    location.assign(languageUrl(e.target.value).href);
+  }
 });
 const year=document.getElementById('year');if(year)year.textContent=new Date().getFullYear();

@@ -35,7 +35,9 @@ Opcjonalny podgląd lokalny: uruchom node scripts/build-site.mjs (Node.js 24) i 
 
 ## Języki i wygląd
 
-Interfejs: PL/DE/EN. Wpisy blogowe: język polski, jawnie opisany również w pozostałych wersjach interfejsu. Wszystkie aktywne tłumaczenia: assets/site-text.js (jeden słownik PL/DE/EN). assets/app.js zawiera wyłącznie obsługę interfejsu i wyboru języka. Wybór języka jest zapisywany lokalnie; link z ?lang=pl, ?lang=de lub ?lang=en ma pierwszeństwo. Jasny i ciemny motyw zależą od ustawienia systemu. Brak analityki, reklam i zewnętrznych fontów.
+Interfejs: PL/DE/EN. Strona główna i dokumenty informacyjne mają osobne adresy /pl/, /de/ i /en/ (np. /de/privacy.html). Workflow generuje pełny HTML z istniejącego słownika assets/site-text.js, własnym adresem canonical oraz wzajemnymi oznaczeniami hreflang pl/de/en i x-default (PL). Język wynika z adresu; preferencje przeglądarki nie zmieniają treści pod danym URL. Przełącznik zachowuje wygląd, ale przechodzi do równoważnego adresu w wybranym języku, zachowując kotwicę. Stare linki z ?lang=pl, ?lang=de lub ?lang=en prowadzą do nowych adresów. Dawne adresy bez prefiksu pozostają dostępne po polsku z canonical wskazującym /pl/.
+
+Wpisy blogowe i instrukcja pozostają po polsku; nie deklarujemy nieistniejących tłumaczeń tych dokumentów. Wszystkie aktywne tłumaczenia interfejsu: assets/site-text.js (jeden słownik PL/DE/EN). assets/app.js zawiera obsługę interfejsu i wyboru języka, a scripts/build-locales.mjs generuje warianty podczas publikacji. Zmiana tłumaczeń nadal wymaga edycji tylko słownika; nie edytuj plików w dist/. Jasny i ciemny motyw zależą od ustawienia systemu. Brak analityki, reklam i zewnętrznych fontów.
 
 ## Dane autora
 

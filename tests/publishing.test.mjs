@@ -4,6 +4,7 @@ import { cp, mkdir, mkdtemp, readFile, writeFile, rm, access } from 'node:fs/pro
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import vm from 'node:vm';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const scratch = path.join(root, '.test-work');
@@ -58,4 +59,84 @@ test('invalid Markdown metadata fails the build and preserves the previous artif
   await writeFile(path.join(directory, 'posts/broken.md'), post.replace('slug: automatyczny-test\n', ''));
   assert.throws(() => build(directory));
   assert.equal(await readFile(path.join(directory, 'dist/index.html'), 'utf8'), previous);
+});
+
+test('all language URLs contain existing translations, canonical and reciprocal hreflang without JavaScript', async t => {
+  const directory = await fixture(t);
+  build(directory);
+  const origin = 'https://mtelektronik.github.io';
+  const languages = ['pl', 'de', 'en'];
+  const pages = ['index.html', 'impressum.html', 'privacy.html', 'fahrtenbuch-privacy.html'];
+  const context = vm.createContext({});
+  vm.runInContext(await readFile(path.join(directory, 'assets/site-text.js'), 'utf8'), context);
+  const escape = s => s.replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]));
+  for (const language of languages) {
+    for (const file of pages) {
+      const html = await readFile(path.join(directory, 'dist', language, file), 'utf8');
+      const pathname = '/' + language + '/' + (file === 'index.html' ? '' : file);
+      assert.ok(html.includes('<html lang="' + language + '"'));
+      assert.ok(html.includes('<link rel="canonical" href="' + origin + pathname + '">'));
+      for (const alternate of languages) {
+        assert.ok(html.includes('<link rel="alternate" hreflang="' + alternate + '" href="' + origin + '/' + alternate + '/' + (file === 'index.html' ? '' : file) + '">'));
+      }
+      assert.ok(html.includes('hreflang="x-default" href="' + origin + '/pl/' + (file === 'index.html' ? '' : file) + '"'));
+      assert.ok(html.includes('<option value="' + language + '" selected>'));
+      for (const [, tag, , key, content] of html.matchAll(/<([a-z][\w:-]*)(\s[^>]*\bdata-i18n="([^"]+)"[^>]*)>([\s\S]*?)<\/\1>/gi)) {
+        assert.equal(content, escape(context.mtSiteText[language][key]), language + '/' + file + ': ' + key + ' (' + tag + ')');
+      }
+      const sitemap = await readFile(path.join(directory, 'dist/sitemap.xml'), 'utf8');
+      assert.ok(sitemap.includes('<loc>' + origin + pathname + '</loc>'));
+    }
+  }
+  // Every link/resource in the deployed HTML resolves inside the artifact.
+  async function checkLinks(folder) {
+    const { readdir } = await import('node:fs/promises');
+    for (const entry of await readdir(folder, { withFileTypes: true })) {
+      const file = path.join(folder, entry.name);
+      if (entry.isDirectory()) { await checkLinks(file); continue; }
+      if (!entry.name.endsWith('.html')) continue;
+      const html = await readFile(file, 'utf8');
+      const relative = path.relative(path.join(directory, 'dist'), file).split(path.sep).join('/');
+      for (const [, link] of html.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
+        const url = new URL(link, origin + '/' + relative);
+        if (url.origin !== origin) continue;
+        const target = url.pathname + (url.pathname.endsWith('/') ? 'index.html' : '');
+        const targetFile = path.join(directory, 'dist', target.slice(1));
+        await access(targetFile);
+        if (url.hash && target.endsWith('.html')) assert.ok((await readFile(targetFile, 'utf8')).includes('id="' + decodeURIComponent(url.hash.slice(1)) + '"'), relative + ': ' + link);
+      }
+    }
+  }
+  await checkLinks(path.join(directory, 'dist'));
+  assert.equal(await readFile(path.join(directory, 'dist/assets/style.css'), 'utf8'), await readFile(path.join(root, 'assets/style.css'), 'utf8'));
+  const article = await readFile(path.join(directory, 'dist/blog/nowy-rozdzial.html'), 'utf8');
+  assert.doesNotMatch(article, /hreflang="(?:de|en)"/);
+});
+
+test('URL language overrides browser and saved preferences; switching and legacy links preserve page and fragment', async () => {
+  const runtime = await readFile(path.join(root, 'assets/app.js'), 'utf8');
+  const texts = await readFile(path.join(root, 'assets/site-text.js'), 'utf8');
+  function run(href) {
+    const url = new URL(href);
+    const result = { selected: null, assigned: null, replaced: null, change: null };
+    const context = vm.createContext({ URL, URLSearchParams,
+      location: { href, search: url.search, replace(value) { result.replaced = value; }, assign(value) { result.assigned = value; } },
+      navigator: { language: 'en-US' },
+      localStorage: { getItem() { throw new Error('Must not override the URL'); }, setItem() {} },
+      document: { documentElement: {}, body: { dataset: { page: 'sitePrivacy' } }, querySelectorAll() { return []; }, querySelector() { return null; },
+        getElementById(id) { return id === 'lang' ? { set value(v) { result.selected = v; }, addEventListener(_, fn) { result.change = fn; } } : null; } },
+    });
+    vm.runInContext(texts, context);
+    vm.runInContext(runtime, context);
+    return result;
+  }
+  const german = run('https://mtelektronik.github.io/de/privacy.html?ref=mail#main');
+  assert.equal(german.selected, 'de');
+  assert.equal(german.replaced, null);
+  german.change({ target: { value: 'en' } });
+  assert.equal(german.assigned, 'https://mtelektronik.github.io/en/privacy.html?ref=mail#main');
+  assert.equal(run('https://mtelektronik.github.io/?lang=de#projects').replaced, 'https://mtelektronik.github.io/de/#projects');
+  assert.equal(run('https://mtelektronik.github.io/privacy.html?lang=en').replaced, 'https://mtelektronik.github.io/en/privacy.html');
+  assert.equal(run('https://mtelektronik.github.io/pl/?lang=constructor').replaced, null);
+  assert.equal(run('https://mtelektronik.github.io/').selected, 'pl');
 });
