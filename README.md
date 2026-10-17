@@ -37,7 +37,7 @@ Opcjonalny podgląd lokalny: uruchom node scripts/build-site.mjs (Node.js 24) i 
 
 Interfejs: PL/DE/EN. Strona główna i dokumenty informacyjne mają osobne adresy /pl/, /de/ i /en/ (np. /de/privacy.html). Workflow generuje pełny HTML z istniejącego słownika assets/site-text.js, własnym adresem canonical oraz wzajemnymi oznaczeniami hreflang pl/de/en i x-default (PL). Język wynika z adresu; preferencje przeglądarki nie zmieniają treści pod danym URL. Przełącznik zachowuje wygląd, ale przechodzi do równoważnego adresu w wybranym języku, zachowując kotwicę. Stare linki z ?lang=pl, ?lang=de lub ?lang=en prowadzą do nowych adresów. Dawne adresy bez prefiksu pozostają dostępne po polsku z canonical wskazującym /pl/.
 
-Wpisy blogowe i instrukcja pozostają po polsku; nie deklarujemy nieistniejących tłumaczeń tych dokumentów. Wszystkie aktywne tłumaczenia interfejsu: assets/site-text.js (jeden słownik PL/DE/EN). assets/app.js zawiera obsługę interfejsu i wyboru języka, a scripts/build-locales.mjs generuje warianty podczas publikacji. Zmiana tłumaczeń nadal wymaga edycji tylko słownika; nie edytuj plików w dist/. Jasny i ciemny motyw zależą od ustawienia systemu. Brak analityki, reklam i zewnętrznych fontów.
+Wpisy blogowe pozostają po polsku. Instrukcja ma pełne wersje PL/DE/EN w osobnych plikach Markdown (patrz niżej). Tłumaczenia głównego interfejsu: assets/site-text.js; etykiety szablonu instrukcji: scripts/build-manual.mjs. assets/app.js obsługuje wybór języka, a scripts/build-locales.mjs generuje warianty podczas publikacji. Nie edytuj plików w dist/. Jasny i ciemny motyw zależą od ustawienia systemu. Brak analityki, reklam i zewnętrznych fontów.
 
 ## Dane autora
 
@@ -64,7 +64,13 @@ GitHub: https://github.com/mtelektronik
 
 ## Instrukcja Fahrtenbuch
 
-Prototyp instrukcji 1.8.0 (PL) znajduje się w docs/fahrtenbuch-instrukcja-prototyp-1.8.0.md. Po zapisaniu zmiany tego pliku na main workflow automatycznie odświeża także stronę instrukcji. Dokument jest jawnie oznaczony jako prototyp. Łącze do czytania i pobrania jest w dziale projektu.
+Instrukcja 1.8.0 ma trzy źródła:
+
+- PL: docs/fahrtenbuch-instrukcja-prototyp-1.8.0.md (nazwa pliku zachowana dla istniejących linków).
+- DE: docs/fahrtenbuch-instrukcja-1.8.0-de.md.
+- EN: docs/fahrtenbuch-instrukcja-1.8.0-en.md.
+
+Po zapisaniu zmian na main workflow automatycznie generuje /pl/fahrtenbuch-instrukcja.html, /de/fahrtenbuch-instrukcja.html i /en/fahrtenbuch-instrukcja.html z canonical i hreflang. Każda wersja strony prowadzi do instrukcji i pliku do pobrania w swoim języku. Dotychczasowy adres /fahrtenbuch-instrukcja.html pozostaje polskim aliasem. Aktualizując działanie opisane w instrukcji, popraw wszystkie trzy pliki; każda wersja zawiera 15 rozdziałów.
 
 ## Prywatność
 
