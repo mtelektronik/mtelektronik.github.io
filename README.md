@@ -1,28 +1,44 @@
-# MTElektronik — GitHub Pages
+# MTElektronik — strona osobista i blog
 
-Statyczna strona WWW: HTML, CSS i JavaScript. Nie wymaga kompilacji, npm ani zewnętrznych usług.
+Statyczna strona Marcina Tchorza, publikowana przez GitHub Pages z gałęzi main (katalog główny). Pliki HTML są gotowe do udostępnienia; strona nie wymaga serwera aplikacji ani instalacji npm.
 
-## Instalacja
-1. Otwórz repozytorium `mtelektronik/mtelektronik.github.io`.
-2. Wgraj **zawartość** tego katalogu do głównego katalogu repozytorium (nie sam folder `mtelektronik-site`).
-3. W `Settings → Pages` wybierz `Deploy from a branch`, `main`, `/(root)`.
-4. Sprawdź `https://mtelektronik.github.io`.
+## Dodawanie wpisu
 
-## Konieczne przed publiczną publikacją
-- Uzupełnij prawdziwe dane wydawcy i zweryfikuj obowiązek Impressum w `impressum.html`.
-- Zweryfikuj i uzupełnij `privacy.html` (strona WWW) oraz `fahrtenbuch-privacy.html` (aplikacja) na podstawie faktycznej konfiguracji i końcowego APK/AAB.
-- W `index.html` zastąp tekst zastępczy w sekcji kontaktu prawdziwym adresem e-mail (najlepiej linkiem `mailto:`), a tłumaczenia odpowiednio zmień w `assets/app.js`.
-- Po opublikowaniu Fahrtenbuch dodaj prawdziwy link Google Play.
-- Nie umieszczaj w publicznym repozytorium haseł, kluczy API ani prywatnych danych, których nie chcesz ujawniać.
+1. Dodaj plik Markdown w katalogu posts/. Skopiuj nagłówek istniejącego wpisu:
+   - slug: unikalny adres, małe litery bez polskich znaków, cyfry i myślniki;
+   - date: data publikacji YYYY-MM-DD;
+   - title: tytuł;
+   - description: krótkie streszczenie;
+   - category: kategoria.
+2. Pod nagłówkiem pisz treść. Obsługiwane są akapity, nagłówki ## i ### oraz linki Markdown z adresem https://, / lub kotwicą #.
+3. Uruchom z katalogu repozytorium: node scripts/build-blog.mjs (Node.js 18 lub nowszy).
+4. Dodaj plik źródłowy i wygenerowane zmiany do commita i wyślij do main.
 
-## Języki i motyw
-PL/DE/EN — przełącznik w nagłówku; wybór jest zapamiętywany w localStorage. Domyślnie język przeglądarki (dla innych języków: EN). Motyw jasny/ciemny automatycznie przez `prefers-color-scheme`.
+Generator aktualizuje blog/*.html, listę wpisów na stronie głównej, feed.xml i sitemap.xml. Po usunięciu wpisu usuń także jego wygenerowany plik blog/*.html przed publikacją. Nie edytuj ręcznie fragmentu pomiędzy znacznikami BLOG w index.html. Szablon wpisu znajduje się w templates/post.html.
 
-## Struktura
-- `index.html` — strona główna
-- `impressum.html` — szablon informacji prawnych
-- `privacy.html` — szablon polityki prywatności strony
-- `fahrtenbuch-privacy.html` — szablon polityki prywatności aplikacji
-- `assets/style.css` — wygląd
-- `assets/app.js` — tłumaczenia i obsługa języka
-- `assets/favicon.svg` — ikona witryny
+## Języki i wygląd
+
+Interfejs: PL/DE/EN. Wpisy blogowe: język polski, jawnie opisany również w pozostałych wersjach interfejsu. Tłumaczenia: assets/site-text.js oraz assets/app.js. Wybór języka jest zapisywany lokalnie; link z ?lang=pl, ?lang=de lub ?lang=en ma pierwszeństwo. Jasny i ciemny motyw zależą od ustawienia systemu. Brak analityki, reklam i zewnętrznych fontów.
+
+## Dane autora
+
+Marcin Tchorz / MTElektronik
+Publiczny e-mail: marcintelektro@gmail.com
+GitHub: https://github.com/mtelektronik
+
+## Pozostałe uzupełnienia
+
+- Adres do doręczeń w impressum.html: autor uzupełni później. Dokument jest oznaczony jako nieukończony.
+- Polityki prywatności wymagają ukończenia i weryfikacji zgodnie z faktyczną konfiguracją hostingu oraz finalnej aplikacji (w szczególności kopie zapasowe, eksport, biblioteki).
+- Po publikacji Fahrtenbuch dodaj prawdziwy link Google Play i zaktualizuj status we wszystkich językach.
+- Opcjonalnie dodaj prawdziwą ikonę aplikacji i zrzuty ekranu (pojazdy, tankowanie, raport). Nie używaj prywatnych danych.
+
+## Pliki
+
+- index.html — wizytówka, lista wpisów i projekty.
+- posts/ — źródła wpisów Markdown.
+- scripts/build-blog.mjs — generator bez zależności npm.
+- templates/post.html — szablon artykułu.
+- assets/ — CSS, tłumaczenia, favicon i grafika udostępniania.
+- feed.xml, sitemap.xml, robots.txt — RSS i informacje dla robotów.
+- impressum.html, privacy.html, fahrtenbuch-privacy.html — dokumenty informacyjne w trakcie uzupełniania.
