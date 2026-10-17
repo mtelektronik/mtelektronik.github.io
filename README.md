@@ -50,7 +50,7 @@ GitHub: https://github.com/mtelektronik
 - Impressum zawiera potwierdzone przez autora dane osoby prywatnej: imię i nazwisko, adres do doręczeń w Niemczech, e-mail i telefon. Po zmianie danych lub sposobu prowadzenia projektu zaktualizuj treść i odpowiednie tłumaczenia.
 - Polityki prywatności opisują stronę i sprawdzony APK Fahrtenbuch 1.8.0 (9). Przed publikacją innego APK/AAB należy sprawdzić zgodność z jego faktycznym działaniem, uprawnieniami, bibliotekami i ustawieniami backupu.
 - Po publikacji Fahrtenbuch dodaj prawdziwy link Google Play i zaktualizuj status we wszystkich językach.
-- Opcjonalnie dodaj prawdziwą ikonę aplikacji. Dostarczone przez autora zrzuty ekranu są w assets/fahrtenbuch/ i w galerii projektu; podgląd raportu PDF jest obrazem, a nie plikiem PDF do pobrania.
+- Opcjonalnie dodaj prawdziwą ikonę aplikacji. Dostarczone przez autora zrzuty ekranu są w assets/fahrtenbuch/ i w galerii projektu. Galeria zawiera pięć ekranów z przykładowymi danymi pojazdu. Podgląd raportu PDF jest obrazem PNG z trwale zamaskowanym numerem rejestracyjnym. Stare obrazy z rzeczywistym numerem usunięto z publikowanych plików.
 
 ## Pliki
 
