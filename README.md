@@ -48,7 +48,7 @@ GitHub: https://github.com/mtelektronik
 ## Pozostałe uzupełnienia
 
 - Impressum zawiera potwierdzone przez autora dane osoby prywatnej: imię i nazwisko, adres do doręczeń w Niemczech, e-mail i telefon. Po zmianie danych lub sposobu prowadzenia projektu zaktualizuj treść i odpowiednie tłumaczenia.
-- Polityki prywatności wymagają ukończenia i weryfikacji zgodnie z faktyczną konfiguracją hostingu oraz finalnej aplikacji (w szczególności kopie zapasowe, eksport, biblioteki).
+- Polityki prywatności opisują stronę i sprawdzony APK Fahrtenbuch 1.8.0 (9). Przed publikacją innego APK/AAB należy sprawdzić zgodność z jego faktycznym działaniem, uprawnieniami, bibliotekami i ustawieniami backupu.
 - Po publikacji Fahrtenbuch dodaj prawdziwy link Google Play i zaktualizuj status we wszystkich językach.
 - Opcjonalnie dodaj prawdziwą ikonę aplikacji. Dostarczone przez autora zrzuty ekranu są w assets/fahrtenbuch/ i w galerii projektu; podgląd raportu PDF jest obrazem, a nie plikiem PDF do pobrania.
 
@@ -60,8 +60,12 @@ GitHub: https://github.com/mtelektronik
 - templates/post.html — szablon artykułu.
 - assets/ — CSS, tłumaczenia, favicon i grafika udostępniania.
 - feed.xml, sitemap.xml, robots.txt — RSS i informacje dla robotów.
-- impressum.html, privacy.html, fahrtenbuch-privacy.html — dokumenty informacyjne w trakcie uzupełniania.
+- impressum.html, privacy.html, fahrtenbuch-privacy.html — dane wydawcy i polityki prywatności.
 
 ## Instrukcja Fahrtenbuch
 
 Prototyp instrukcji 1.8.0 (PL) znajduje się w docs/fahrtenbuch-instrukcja-prototyp-1.8.0.md. Po zapisaniu zmiany tego pliku na main workflow automatycznie odświeża także stronę instrukcji. Dokument jest jawnie oznaczony jako prototyp. Łącze do czytania i pobrania jest w dziale projektu.
+
+## Prywatność
+
+Polityki PL/DE/EN są w privacy.html i fahrtenbuch-privacy.html; pełne tłumaczenia pozostają w assets/site-text.js. Strona nie zapisuje już zbędnej preferencji języka w localStorage. Polityka aplikacji rozdziela lokalną historię, eksporty, ręczny JSON, domyślne mechanizmy backupu Androida i dobrowolne zgłoszenia e-mail (opis, opcjonalny zrzut, bez proszenia o kopie JSON). Data safety w Google Play wymaga zgodności z finalnym pakietem. Ocena techniczna: APK com.lipie.fahrtenbuch_app, 1.8.0 (9), bez uprawnienia Internet i bez wyłączenia domyślnego backupu.

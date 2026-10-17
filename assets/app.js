@@ -15,7 +15,6 @@ function setLanguage(lang){
       const meta=document.querySelector(selector);if(meta)meta.content=text.homeMeta;
     }
   }
-  try{localStorage.setItem('mt-language',lang)}catch(e){}
 }
 function languageUrl(lang){
   const url=new URL(location.href);
@@ -33,7 +32,6 @@ const queryLanguage=new URLSearchParams(location.search).get('lang');
 if(Object.hasOwn(translations,queryLanguage))location.replace(languageUrl(queryLanguage).href);
 document.getElementById('lang')?.addEventListener('change',e=>{
   if(Object.hasOwn(translations,e.target.value)){
-    try{localStorage.setItem('mt-language',e.target.value)}catch(e){}
     location.assign(languageUrl(e.target.value).href);
   }
 });
