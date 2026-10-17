@@ -42,3 +42,7 @@ GitHub: https://github.com/mtelektronik
 - assets/ — CSS, tłumaczenia, favicon i grafika udostępniania.
 - feed.xml, sitemap.xml, robots.txt — RSS i informacje dla robotów.
 - impressum.html, privacy.html, fahrtenbuch-privacy.html — dokumenty informacyjne w trakcie uzupełniania.
+
+## Instrukcja Fahrtenbuch
+
+Prototyp instrukcji 1.8.0 (PL) znajduje się w docs/fahrtenbuch-instrukcja-prototyp-1.8.0.md. Po zmianie źródła uruchom node scripts/build-manual.mjs i dodaj do commita również wygenerowany fahrtenbuch-instrukcja.html. Dokument jest jawnie oznaczony jako prototyp. Łącze do czytania i pobrania jest w dziale projektu.

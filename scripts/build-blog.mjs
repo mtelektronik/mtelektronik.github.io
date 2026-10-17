@@ -51,6 +51,6 @@ home = home.replace(/<!-- BLOG:START -->[\s\S]*?<!-- BLOG:END -->/, `<!-- BLOG:S
 await writeFile(homePath,home);
 const rss = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>MTElektronik — blog</title><link>${origin}/</link><description>Projekty, aplikacje i notatki autora.</description><language>pl</language><atom:link href="${origin}/feed.xml" rel="self" type="application/rss+xml"/>${posts.map(p=>`<item><title>${escape(p.title)}</title><link>${origin}/blog/${p.slug}.html</link><guid isPermaLink="true">${origin}/blog/${p.slug}.html</guid><pubDate>${new Date(p.date+'T12:00:00+02:00').toUTCString()}</pubDate><description>${escape(p.description)}</description></item>`).join('')}</channel></rss>\n`;
 await writeFile(path.join(root,'feed.xml'),rss);
-const urls = ['/', '/impressum.html','/privacy.html','/fahrtenbuch-privacy.html', ...posts.map(p=>`/blog/${p.slug}.html`)];
+const urls = ['/', '/impressum.html','/privacy.html','/fahrtenbuch-privacy.html', '/fahrtenbuch-instrukcja.html', ...posts.map(p=>`/blog/${p.slug}.html`)];
 await writeFile(path.join(root,'sitemap.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map(url=>`<url><loc>${origin}${url}</loc></url>`).join('')}</urlset>\n`);
 console.log(`Built ${posts.length} post(s), homepage, RSS and sitemap.`);
