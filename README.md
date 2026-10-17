@@ -18,7 +18,7 @@ Generator aktualizuje blog/*.html, listę wpisów na stronie głównej, feed.xml
 
 ## Języki i wygląd
 
-Interfejs: PL/DE/EN. Wpisy blogowe: język polski, jawnie opisany również w pozostałych wersjach interfejsu. Tłumaczenia: assets/site-text.js oraz assets/app.js. Wybór języka jest zapisywany lokalnie; link z ?lang=pl, ?lang=de lub ?lang=en ma pierwszeństwo. Jasny i ciemny motyw zależą od ustawienia systemu. Brak analityki, reklam i zewnętrznych fontów.
+Interfejs: PL/DE/EN. Wpisy blogowe: język polski, jawnie opisany również w pozostałych wersjach interfejsu. Wszystkie aktywne tłumaczenia: assets/site-text.js (jeden słownik PL/DE/EN). assets/app.js zawiera wyłącznie obsługę interfejsu i wyboru języka. Wybór języka jest zapisywany lokalnie; link z ?lang=pl, ?lang=de lub ?lang=en ma pierwszeństwo. Jasny i ciemny motyw zależą od ustawienia systemu. Brak analityki, reklam i zewnętrznych fontów.
 
 ## Dane autora
 
