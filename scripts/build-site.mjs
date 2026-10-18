@@ -23,4 +23,5 @@ for (const directory of ['assets', 'blog', 'docs']) {
   await cp(path.join(root, directory), path.join(destination, directory), { recursive: true });
 }
 execFileSync(process.execPath, [path.join(root, 'scripts', 'build-locales.mjs')], { stdio: 'inherit' });
+execFileSync(process.execPath, [path.join(root, 'scripts', 'add-visitor-counter.mjs')], { stdio: 'inherit' });
 console.log('Website ready in dist/.');

@@ -37,7 +37,7 @@ Opcjonalny podgląd lokalny: uruchom node scripts/build-site.mjs (Node.js 24) i 
 
 Interfejs: PL/DE/EN. Strona główna i dokumenty informacyjne mają osobne adresy /pl/, /de/ i /en/ (np. /de/privacy.html). Workflow generuje pełny HTML z istniejącego słownika assets/site-text.js, własnym adresem canonical oraz wzajemnymi oznaczeniami hreflang pl/de/en i x-default (PL). Język wynika z adresu; preferencje przeglądarki nie zmieniają treści pod danym URL. Przełącznik zachowuje wygląd, ale przechodzi do równoważnego adresu w wybranym języku, zachowując kotwicę. Stare linki z ?lang=pl, ?lang=de lub ?lang=en prowadzą do nowych adresów. Dawne adresy bez prefiksu pozostają dostępne po polsku z canonical wskazującym /pl/.
 
-Wpisy blogowe pozostają po polsku. Instrukcja ma pełne wersje PL/DE/EN w osobnych plikach Markdown (patrz niżej). Tłumaczenia głównego interfejsu: assets/site-text.js; etykiety szablonu instrukcji: scripts/build-manual.mjs. assets/app.js obsługuje wybór języka, a scripts/build-locales.mjs generuje warianty podczas publikacji. Nie edytuj plików w dist/. Jasny i ciemny motyw zależą od ustawienia systemu. Brak analityki, reklam i zewnętrznych fontów.
+Wpisy blogowe pozostają po polsku. Instrukcja ma pełne wersje PL/DE/EN w osobnych plikach Markdown (patrz niżej). Tłumaczenia głównego interfejsu: assets/site-text.js; etykiety szablonu instrukcji: scripts/build-manual.mjs. assets/app.js obsługuje wybór języka, a scripts/build-locales.mjs generuje warianty podczas publikacji. Nie edytuj plików w dist/. Jasny i ciemny motyw zależą od ustawienia systemu. Brak reklam i zewnętrznych fontów. Prosty licznik GoatCounter opisano poniżej i w polityce prywatności strony.
 
 ## Dane autora
 
@@ -73,5 +73,13 @@ Instrukcja 1.8.0 ma trzy źródła:
 Po zapisaniu zmian na main workflow automatycznie generuje /pl/fahrtenbuch-instrukcja.html, /de/fahrtenbuch-instrukcja.html i /en/fahrtenbuch-instrukcja.html z canonical i hreflang. Każda wersja strony prowadzi do instrukcji i pliku do pobrania w swoim języku. Dotychczasowy adres /fahrtenbuch-instrukcja.html pozostaje polskim aliasem. Aktualizując działanie opisane w instrukcji, popraw wszystkie trzy pliki; każda wersja zawiera 15 rozdziałów.
 
 ## Prywatność
+
+### Licznik odwiedzin
+
+assets/visitor-counter.js korzysta z publicznego adresu https://mtelektronik.goatcounter.com. Nie umieszczaj tu hasła ani tokenu. scripts/add-visitor-counter.mjs dołącza lokalny skrypt do wszystkich stron HTML w dist/. Licznik pojawia się jako mały tekst w stopce po poprawnym pobraniu wyniku. Wszystkie strony i języki zgłaszają ten sam umowny path=/; licznik nie wysyła rzeczywistych ścieżek, zapytań URL, referrera ani wymiarów ekranu. Nie dołączaj dodatkowo count.js, bo spowoduje to podwójne zgłaszanie odwiedzin.
+
+Żądania są wykonywane wyłącznie na produkcyjnej domenie. Kod pomija DNT, GPC, automatyczne testy i stare przekierowania ?lang=. Nie używa cookies ani localStorage; credentials są pomijane, a referrer nie jest przesyłany. IP i standardowe nagłówki żądania otrzymuje dostawca; szczegóły opisuje polityka strony. Awaria usługi lub błędne dane pozostawiają stopkę bez licznika.
+
+W GoatCounter musi być włączone „Allow adding visitor counts on your website”. Publiczny wynik TOTAL.json może być buforowany do 4 godzin; nie oczekuj aktualizacji po każdym odświeżeniu. Liczba jest orientacyjna, nie stanowi dokładnej liczby różnych osób i nie obejmuje odwiedzin sprzed uruchomienia usługi. Zmiana counterSite na pusty ciąg wyłącza cały licznik i połączenia z usługą. Po zmianie dostawcy zaktualizuj politykę prywatności PL/DE/EN.
 
 Polityki PL/DE/EN są w privacy.html i fahrtenbuch-privacy.html; pełne tłumaczenia pozostają w assets/site-text.js. Strona nie zapisuje już zbędnej preferencji języka w localStorage. Polityka aplikacji rozdziela lokalną historię, eksporty, ręczny JSON, domyślne mechanizmy backupu Androida i dobrowolne zgłoszenia e-mail (opis, opcjonalny zrzut, bez proszenia o kopie JSON). Data safety w Google Play wymaga zgodności z finalnym pakietem. Ocena techniczna: APK com.lipie.fahrtenbuch_app, 1.8.0 (9), bez uprawnienia Internet i bez wyłączenia domyślnego backupu.
