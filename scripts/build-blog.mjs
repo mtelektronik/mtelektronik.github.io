@@ -50,7 +50,7 @@ for (const post of posts) {
   const page = shell.replace(/\{\{(TITLE|DESCRIPTION|DATE|CATEGORY|BODY|URL)\}\}/g, (_, key) => replacements[key]);
   await writeFile(path.join(root, 'blog', post.slug + '.html'), page);
 }
-const cards = posts.map(post => `<article class="post-card"><div class="post-meta" lang="pl"><span>${escape(post.category)}</span><time datetime="${post.date}">${post.date.split('-').reverse().join('.')}</time></div><h3 lang="pl"><a href="blog/${post.slug}.html">${escape(post.title)}</a></h3><p lang="pl">${escape(post.description)}</p><a class="text-link" href="blog/${post.slug}.html" data-i18n="readPost">Czytaj wpis <span aria-hidden="true">↗</span></a></article>`).join('\n');
+const cards = posts.map(post => `<article class="post-card"><div class="post-meta" lang="pl"><time datetime="${post.date}">${post.date.split('-').reverse().join('.')}</time></div><h3 lang="pl"><a href="blog/${post.slug}.html">${escape(post.title)}</a></h3><p lang="pl">${escape(post.description)}</p><a class="text-link" href="blog/${post.slug}.html" data-i18n="readPost">Czytaj wpis <span aria-hidden="true">↗</span></a></article>`).join('\n');
 const homePath = path.join(root, 'index.html');
 let home = await readFile(homePath,'utf8');
 if (!home.includes('<!-- BLOG:START -->') || !home.includes('<!-- BLOG:END -->')) throw new Error('Missing blog markers');
