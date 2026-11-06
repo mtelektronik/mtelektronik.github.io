@@ -21,3 +21,6 @@
 
 /* Cool neutral surfaces and blue accents inspired by Google Play Console. */
 .header{background:var(--panel)}.hero-note{background:var(--panel);border-radius:18px;transform:none}.appcard,.manual-callout,.report-preview,.manual-toc{border-radius:18px}.pill{border-radius:20px;background:var(--soft)}.button{border-radius:24px}.visitor-counter{font-size:.82rem;line-height:1.6}.visitor-counter[data-snapshot]{color:var(--muted)}
+
+/* Supplied MTElektronik branding, preserved as original PNG assets. */
+.brand{max-width:calc(100% - 74px);flex-shrink:1}.brand-logo{display:block;width:300px;max-width:100%;height:auto;background:#fff;border-radius:10px}.nav{min-height:124px;padding-block:12px}@media(max-width:900px){.brand-logo{width:260px}}@media(max-width:680px){.brand-logo{width:250px}.nav{min-height:0;padding-block:16px}}
