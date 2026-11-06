@@ -114,6 +114,18 @@ test('all language URLs contain existing translations, canonical and reciprocal 
       const html = await readFile(path.join(directory, 'dist', language, file), 'utf8');
       const pathname = '/' + language + '/' + (file === 'index.html' ? '' : file);
       assert.ok(html.includes('<html lang="' + language + '"'));
+      if (file === 'fahrtenbuch-privacy.html') {
+        assert.match(html, /1\.9\.0/);
+        assert.doesNotMatch(html, /1\.8\.0|same calendar day|selben Kalendertag|tego samego dnia/);
+        assert.match(html, /24/);
+        assert.match(html, /LPG/);
+        assert.ok(html.includes(context.mtSiteText[language].policy_appUpdated));
+        assert.ok(html.includes('https://developer.android.com/identity/data/autobackup'));
+      }
+      if (file === 'privacy.html') {
+        assert.ok(html.includes(context.mtSiteText[language].website_updated));
+      }
+
       assert.ok(html.includes('<link rel="canonical" href="' + origin + pathname + '">'));
       for (const alternate of languages) {
         assert.ok(html.includes('<link rel="alternate" hreflang="' + alternate + '" href="' + origin + '/' + alternate + '/' + (file === 'index.html' ? '' : file) + '">'));

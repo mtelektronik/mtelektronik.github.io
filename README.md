@@ -48,7 +48,7 @@ GitHub: https://github.com/mtelektronik
 ## Pozostałe uzupełnienia
 
 - Impressum zawiera potwierdzone przez autora dane osoby prywatnej: imię i nazwisko, adres do doręczeń w Niemczech, e-mail i telefon. Po zmianie danych lub sposobu prowadzenia projektu zaktualizuj treść i odpowiednie tłumaczenia.
-- Polityki prywatności opisują stronę i sprawdzony APK Fahrtenbuch 1.8.0 (9). Przed publikacją innego APK/AAB należy sprawdzić zgodność z jego faktycznym działaniem, uprawnieniami, bibliotekami i ustawieniami backupu.
+- Polityki prywatności opisują stronę i sprawdzony APK Fahrtenbuch 1.9.0 (11). Przed publikacją innego APK/AAB należy sprawdzić zgodność z jego faktycznym działaniem, uprawnieniami, bibliotekami i ustawieniami backupu.
 - Po publikacji Fahrtenbuch dodaj prawdziwy link Google Play i zaktualizuj status we wszystkich językach.
 - Opcjonalnie dodaj prawdziwą ikonę aplikacji. Dostarczone przez autora zrzuty ekranu są w assets/fahrtenbuch/ i w galerii projektu. Galeria zawiera pięć ekranów z przykładowymi danymi pojazdu. Podgląd raportu PDF jest obrazem PNG z trwale zamaskowanym numerem rejestracyjnym. Stare obrazy z rzeczywistym numerem usunięto z publikowanych plików.
 
@@ -82,4 +82,6 @@ assets/visitor-counter.js korzysta z publicznego adresu https://mtelektronik.goa
 
 W GoatCounter musi być włączone „Allow adding visitor counts on your website”. Publiczny wynik TOTAL.json może być buforowany do 4 godzin; nie oczekuj aktualizacji po każdym odświeżeniu. Liczba jest orientacyjna, nie stanowi dokładnej liczby różnych osób i nie obejmuje odwiedzin sprzed uruchomienia usługi. Zmiana counterSite na pusty ciąg wyłącza cały licznik i połączenia z usługą. Po zmianie dostawcy zaktualizuj politykę prywatności PL/DE/EN.
 
-Polityki PL/DE/EN są w privacy.html i fahrtenbuch-privacy.html; pełne tłumaczenia pozostają w assets/site-text.js. Strona nie zapisuje już zbędnej preferencji języka w localStorage. Polityka aplikacji rozdziela lokalną historię, eksporty, ręczny JSON, domyślne mechanizmy backupu Androida i dobrowolne zgłoszenia e-mail (opis, opcjonalny zrzut, bez proszenia o kopie JSON). Data safety w Google Play wymaga zgodności z finalnym pakietem. Ocena techniczna: APK com.lipie.fahrtenbuch_app, 1.8.0 (9), bez uprawnienia Internet i bez wyłączenia domyślnego backupu.
+Polityki PL/DE/EN są w privacy.html i fahrtenbuch-privacy.html; pełne tłumaczenia pozostają w assets/site-text.js. Strona nie zapisuje już zbędnej preferencji języka w localStorage. Polityka aplikacji rozdziela lokalną historię, eksporty, ręczny JSON, domyślne mechanizmy backupu Androida i dobrowolne zgłoszenia e-mail (opis, opcjonalny zrzut, bez proszenia o kopie JSON). Data safety w Google Play wymaga zgodności z finalnym pakietem. Ocena techniczna: APK com.lipie.fahrtenbuch_app, 1.9.0 (11), bez uprawnienia Internet i bez wyłączenia domyślnego backupu.
+
+Aktualizacja polityki aplikacji z 6.11.2026: porównano kod build 11 i manifest pakietu Fahrtenbuch-1.9.0-build11-update.apk (versionName 1.9.0, versionCode 11). Brak uprawnienia INTERNET i SDK reklam/analityki w sprawdzonym kodzie; nie wyłączono domyślnego backupu Androida. Polityki PL/DE/EN opisują rodzaj tankowanego paliwa, eksporty dwóch paliw oraz limit indywidualnej edycji/usuwania: mniej niż 24 godziny i 10 ostatnich wpisów. Data polityki aplikacji jest niezależna od daty polityki strony.
