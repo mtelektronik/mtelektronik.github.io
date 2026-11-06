@@ -29,7 +29,7 @@ Slug musi być unikalny; używaj małych liter bez polskich znaków, cyfr i myś
 
 Zmiana istniejącego pliku aktualizuje wpis. Usunięcie pliku usuwa artykuł także z opublikowanej witryny, RSS i mapy strony. Błędny nagłówek lub powtórzony slug zatrzymuje publikację; szczegóły są w zakładce Actions, a poprzednia wersja strony pozostaje dostępna. Popraw plik i zapisz kolejny commit, aby ponowić publikację.
 
-Workflow .github/workflows/pages.yml buduje katalog dist/ i publikuje go jako artefakt GitHub Pages. Nie zapisuje wygenerowanych plików z powrotem do repozytorium. Nie edytuj ręcznie fragmentu pomiędzy znacznikami BLOG w index.html. Szablon wpisu znajduje się w templates/post.html.
+Workflow .github/workflows/pages.yml buduje katalog dist/ i publikuje go jako artefakt GitHub Pages. Nie zapisuje wygenerowanych plików z powrotem do repozytorium. Strona główna nie wyświetla listy wpisów; generator nadal publikuje artykuły, RSS i mapę witryny. Szablon wpisu znajduje się w templates/post.html.
 
 Opcjonalny podgląd lokalny: uruchom node scripts/build-site.mjs (Node.js 24) i udostępnij katalog dist/ przez lokalny serwer HTTP. Testy publikowania: node --test tests/publishing.test.mjs. GitHub Pages musi mieć ustawione Settings → Pages → Source: GitHub Actions.
 
@@ -54,7 +54,7 @@ GitHub: https://github.com/mtelektronik
 
 ## Pliki
 
-- index.html — wizytówka, lista wpisów i projekty.
+- index.html — wizytówka i projekty.
 - posts/ — źródła wpisów Markdown.
 - scripts/build-blog.mjs — generator bez zależności npm.
 - templates/post.html — szablon artykułu.

@@ -68,8 +68,13 @@ test('Markdown addition and deletion update the complete deployment artifact', a
   const source = path.join(directory, 'posts/automatyczny-test.md');
   await writeFile(source, post);
   build(directory);
-  for (const file of ['index.html', 'feed.xml', 'sitemap.xml', 'blog/automatyczny-test.html']) {
+  for (const file of ['feed.xml', 'sitemap.xml', 'blog/automatyczny-test.html']) {
     assert.match(await readFile(path.join(directory, 'dist', file), 'utf8'), /automatyczny-test/);
+  }
+  for (const prefix of ['', 'pl/', 'de/', 'en/']) {
+    const home = await readFile(path.join(directory, 'dist', prefix, 'index.html'), 'utf8');
+    assert.doesNotMatch(home, /id="blog"|blog-title|post-list|automatyczny-test|href="#blog"/);
+    assert.match(home, /id="projects"/);
   }
   assert.match(await readFile(path.join(directory, 'dist/blog/automatyczny-test.html'), 'utf8'), /Test &amp; wpis/);
   await access(path.join(directory, 'dist/fahrtenbuch-instrukcja.html'));

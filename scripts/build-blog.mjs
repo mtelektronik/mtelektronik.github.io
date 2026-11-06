@@ -50,14 +50,8 @@ for (const post of posts) {
   const page = shell.replace(/\{\{(TITLE|DESCRIPTION|DATE|CATEGORY|BODY|URL)\}\}/g, (_, key) => replacements[key]);
   await writeFile(path.join(root, 'blog', post.slug + '.html'), page);
 }
-const cards = posts.map(post => `<article class="post-card"><div class="post-meta" lang="pl"><time datetime="${post.date}">${post.date.split('-').reverse().join('.')}</time></div><h3 lang="pl"><a href="blog/${post.slug}.html">${escape(post.title)}</a></h3><p lang="pl">${escape(post.description)}</p><a class="text-link" href="blog/${post.slug}.html" data-i18n="readPost">Czytaj wpis <span aria-hidden="true">↗</span></a></article>`).join('\n');
-const homePath = path.join(root, 'index.html');
-let home = await readFile(homePath,'utf8');
-if (!home.includes('<!-- BLOG:START -->') || !home.includes('<!-- BLOG:END -->')) throw new Error('Missing blog markers');
-home = home.replace(/<!-- BLOG:START -->[\s\S]*?<!-- BLOG:END -->/, `<!-- BLOG:START -->\n${cards}\n<!-- BLOG:END -->`);
-await writeFile(homePath,home);
 const rss = `<?xml version="1.0" encoding="UTF-8"?>\n<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>MTElektronik — blog</title><link>${origin}/</link><description>Projekty, aplikacje i notatki autora.</description><language>pl</language><atom:link href="${origin}/feed.xml" rel="self" type="application/rss+xml"/>${posts.map(p=>`<item><title>${escape(p.title)}</title><link>${origin}/blog/${p.slug}.html</link><guid isPermaLink="true">${origin}/blog/${p.slug}.html</guid><pubDate>${new Date(p.date+'T12:00:00+02:00').toUTCString()}</pubDate><description>${escape(p.description)}</description></item>`).join('')}</channel></rss>\n`;
 await writeFile(path.join(root,'feed.xml'),rss);
 const urls = ['/', '/impressum.html','/privacy.html','/fahrtenbuch-privacy.html', '/fahrtenbuch-instrukcja.html', ...posts.map(p=>`/blog/${p.slug}.html`)];
 await writeFile(path.join(root,'sitemap.xml'),`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.map(url=>`<url><loc>${origin}${url}</loc></url>`).join('')}</urlset>\n`);
-console.log(`Built ${posts.length} post(s), homepage, RSS and sitemap.`);
+console.log(`Built ${posts.length} post(s), RSS and sitemap.`);
