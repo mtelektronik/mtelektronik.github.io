@@ -79,7 +79,7 @@ test('Markdown addition and deletion update the complete deployment artifact', a
   assert.match(await readFile(path.join(directory, 'dist/blog/automatyczny-test.html'), 'utf8'), /Test &amp; wpis/);
   await access(path.join(directory, 'dist/fahrtenbuch-instrukcja.html'));
   await access(path.join(directory, 'dist/assets/style.css'));
-  await access(path.join(directory, 'dist/docs/fahrtenbuch-instrukcja-prototyp-1.8.0.md'));
+  await access(path.join(directory, 'dist/docs/fahrtenbuch-instrukcja-1.9.0-pl.md'));
   for (const file of ['scripts', 'posts', 'templates', '.github', '.git', 'tests']) {
     await assert.rejects(access(path.join(directory, 'dist', file)), { code: 'ENOENT' });
   }
@@ -157,9 +157,9 @@ test('manual reading and downloading use the selected language and retain all 15
   const directory = await fixture(t);
   build(directory);
   const editions = {
-    pl: { file: 'fahrtenbuch-instrukcja-prototyp-1.8.0.md', download: 'Pobierz instrukcję', first: 'Szybki start', last: 'Informacje o aplikacji', backup: 'Nie łączy dwóch historii.' },
-    de: { file: 'fahrtenbuch-instrukcja-1.8.0-de.md', download: 'Anleitung herunterladen', first: 'Schnellstart', last: 'App-Informationen', backup: 'Zwei Historien werden nicht zusammengeführt.' },
-    en: { file: 'fahrtenbuch-instrukcja-1.8.0-en.md', download: 'Download the guide', first: 'Quick start', last: 'App information', backup: 'It does not merge two histories.' },
+    pl: { file: 'fahrtenbuch-instrukcja-1.9.0-pl.md', download: 'Pobierz instrukcję', first: 'Szybki start', last: 'Informacje o aplikacji', backup: 'Nie łączy dwóch historii.' },
+    de: { file: 'fahrtenbuch-instrukcja-1.9.0-de.md', download: 'Anleitung herunterladen', first: 'Schnellstart', last: 'App-Informationen', backup: 'Zwei Historien werden nicht zusammengeführt.' },
+    en: { file: 'fahrtenbuch-instrukcja-1.9.0-en.md', download: 'Download the guide', first: 'Quick start', last: 'App information', backup: 'It does not merge two histories.' },
   };
   for (const [language, edition] of Object.entries(editions)) {
     const home = await readFile(path.join(directory, 'dist', language, 'index.html'), 'utf8');
@@ -178,6 +178,10 @@ test('manual reading and downloading use the selected language and retain all 15
       assert.ok(content.includes(edition.first));
       assert.ok(content.includes(edition.last));
       assert.ok(content.includes(edition.backup));
+      assert.ok(content.includes('1.9.0'));
+      assert.ok(content.includes('24'));
+      assert.ok(content.includes('LPG'));
+      assert.ok(content.includes('PODSUMOWANIE_PETROL'));
       assert.ok(content.includes('10 MiB'));
       assert.ok(content.includes('kWh/100 km'));
     }

@@ -64,13 +64,13 @@ GitHub: https://github.com/mtelektronik
 
 ## Instrukcja Fahrtenbuch
 
-Instrukcja 1.8.0 ma trzy źródła:
+Instrukcja 1.9.0 (build 11) ma trzy źródła:
 
-- PL: docs/fahrtenbuch-instrukcja-prototyp-1.8.0.md (nazwa pliku zachowana dla istniejących linków).
-- DE: docs/fahrtenbuch-instrukcja-1.8.0-de.md.
-- EN: docs/fahrtenbuch-instrukcja-1.8.0-en.md.
+- PL: docs/fahrtenbuch-instrukcja-1.9.0-pl.md.
+- DE: docs/fahrtenbuch-instrukcja-1.9.0-de.md.
+- EN: docs/fahrtenbuch-instrukcja-1.9.0-en.md.
 
-Po zapisaniu zmian na main workflow automatycznie generuje /pl/fahrtenbuch-instrukcja.html, /de/fahrtenbuch-instrukcja.html i /en/fahrtenbuch-instrukcja.html z canonical i hreflang. Każda wersja strony prowadzi do instrukcji i pliku do pobrania w swoim języku. Dotychczasowy adres /fahrtenbuch-instrukcja.html pozostaje polskim aliasem. Aktualizując działanie opisane w instrukcji, popraw wszystkie trzy pliki; każda wersja zawiera 15 rozdziałów.
+Po zapisaniu zmian na main workflow automatycznie generuje /pl/fahrtenbuch-instrukcja.html, /de/fahrtenbuch-instrukcja.html i /en/fahrtenbuch-instrukcja.html z canonical i hreflang. Każda wersja strony prowadzi do instrukcji i pliku do pobrania w swoim języku. Dotychczasowy adres /fahrtenbuch-instrukcja.html pozostaje polskim aliasem. Pliki instrukcji 1.8.0 pozostają archiwalnymi plikami do pobrania pod dawnymi adresami. Instrukcja 1.9.0 została porównana z kodem wersji 1.9.0+11 i opisuje dwa paliwa, limit edycji 24 godzin oraz raporty dla benzyny i LPG. Aktualizując działanie opisane w instrukcji, popraw wszystkie trzy pliki; każda wersja zawiera 15 rozdziałów.
 
 ## Prywatność
 
