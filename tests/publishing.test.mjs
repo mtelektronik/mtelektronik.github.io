@@ -9,25 +9,27 @@ import vm from 'node:vm';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const scratch = path.join(root, '.test-work');
 
-test('visitor counter stays inactive without configuration and respects privacy and failure conditions', async () => {
+test('counter respects privacy, preserves its snapshot and reads totals independently', async () => {
   const source = await readFile(path.join(root, 'assets/visitor-counter.js'), 'utf8');
-  assert.ok(source.includes("const counterSite = 'https://mtelektronik.goatcounter.com';"));
-  async function run({ configured = true, hostname = 'mtelektronik.github.io', doNotTrack, globalPrivacyControl, count = '1,234', offline = false, language = 'pl' } = {}) {
+  async function run({ configured = true, hostname = 'mtelektronik.github.io', doNotTrack, globalPrivacyControl, count = '1,234', offline = false, registerBlocked = false, language = 'pl', snapshot = false } = {}) {
     const calls = [], appended = [];
+    const saved = { textContent: 'Saved total: 19', removeAttribute() { this.updated = true; } };
     const context = vm.createContext({ URLSearchParams, AbortSignal, Intl,
       location: { hostname, search: '?private=test' }, navigator: { doNotTrack, globalPrivacyControl },
-      document: { documentElement: { lang: language }, querySelector() { return { append(node) { appended.push(node); } }; }, createElement() { return {}; } },
+      document: { documentElement: { lang: language }, querySelector(selector) { return selector === '.visitor-counter' ? (snapshot ? saved : null) : { append(node) { appended.push(node); } }; }, createElement() { return {}; } },
       async fetch(url, options) {
         calls.push({ url, options });
-        if (offline) throw new Error('offline');
+        if (offline || (registerBlocked && url.includes('/count?'))) throw new Error('blocked');
         return { ok: true, async json() { return { count }; } };
       },
     });
     await vm.runInContext(source.replace(/^const counterSite = .*;$/m, configured ? "const counterSite = 'https://example.goatcounter.com';" : "const counterSite = '';"), context);
-    return { calls, appended };
+    return { calls, appended, saved };
   }
   for (const options of [{ configured: false }, { hostname: '127.0.0.1' }, { doNotTrack: '1' }, { globalPrivacyControl: true }]) {
-    assert.equal((await run(options)).calls.length, 0);
+    const result = await run({ ...options, snapshot: true });
+    assert.equal(result.calls.length, 0);
+    assert.equal(result.saved.textContent, 'Saved total: 19');
   }
   const active = await run();
   assert.equal(active.calls.length, 2);
@@ -38,8 +40,16 @@ test('visitor counter stays inactive without configuration and respects privacy 
   assert.equal(active.calls[1].url, 'https://example.goatcounter.com/counter/TOTAL.json');
   assert.ok((await run({ language: 'de' })).appended[0].textContent.startsWith('Besuche:'));
   assert.ok((await run({ language: 'en' })).appended[0].textContent.startsWith('Visits:'));
-  assert.equal((await run({ offline: true })).appended.length, 0);
-  assert.equal((await run({ count: '<img onerror=alert(1)>' })).appended.length, 0);
+  assert.equal((await run({ registerBlocked: true })).appended.length, 1);
+  const updated = await run({ snapshot: true });
+  assert.equal(updated.appended.length, 0);
+  assert.equal(updated.saved.updated, true);
+  assert.ok(updated.saved.textContent.startsWith('Odwiedziny:'));
+  for (const options of [{ offline: true }, { count: '<img onerror=alert(1)>' }]) {
+    const result = await run({ ...options, snapshot: true });
+    assert.equal(result.saved.textContent, 'Saved total: 19');
+    assert.equal(result.appended.length, 0);
+  }
 });
 
 async function fixture(t) {
@@ -147,7 +157,10 @@ test('all language URLs contain existing translations, canonical and reciprocal 
       if (entry.isDirectory()) { await checkLinks(file); continue; }
       if (!entry.name.endsWith('.html')) continue;
       const html = await readFile(file, 'utf8');
-      if (html.includes('class="footer"')) assert.ok(html.includes('src="/assets/visitor-counter.js"'));
+      if (html.includes('class="footer"')) {
+        assert.ok(html.includes('src="/assets/visitor-counter.js"'));
+        assert.match(html, /class="visitor-counter" data-snapshot="[^"]+"/);
+      }
       const relative = path.relative(path.join(directory, 'dist'), file).split(path.sep).join('/');
       for (const [, link] of html.matchAll(/\b(?:href|src)="([^"]+)"/g)) {
         const url = new URL(link, origin + '/' + relative);

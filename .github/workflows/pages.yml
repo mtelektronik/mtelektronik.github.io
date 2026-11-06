@@ -28,6 +28,8 @@ jobs:
       - name: Test blog publication
         run: node --test tests/publishing.test.mjs
       - name: Generate website
+        env:
+          REFRESH_VISITOR_COUNT: "1"
         run: node scripts/build-site.mjs
       - name: Configure GitHub Pages
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
